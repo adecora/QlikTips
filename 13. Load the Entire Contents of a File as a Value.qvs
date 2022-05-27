@@ -1,0 +1,18 @@
+/*************************************************************************************************
+
+Test Case: Load the Entire Content of a File as a Value
+
+Description: Little tricky since Qlik was really built to consume tabular data. So when connectiong to files
+	it is triying to determine the columns and rows
+
+*************************************************************************************************/
+
+test:
+LOAD 
+	"@1:n"	as Source
+FROM
+	[C:\Users\alejandro.varela\Documents\.qlik\ventaRegular.md]
+	(fix, utf8, record is 100000 lines);
+
+
+Exit Script;

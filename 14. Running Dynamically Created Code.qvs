@@ -1,0 +1,25 @@
+/*************************************************************************************************
+
+Test Case: Running Dynamically Created Code
+
+Description: With the use of dollar sign expansion, you can execute a script you have programmatically 
+	built in the script or pulled in from source files
+
+Result: $(Answer) in the below example. Its is going to be expanded by the dollar sign expansion and be
+	executed like any other script.
+
+*************************************************************************************************/
+
+Answer:
+Load * Inline [
+Answer
+Yes
+No
+Maybe
+];
+
+Let Answer = 'Trace Shoud you do it? ' & Upper(Peek('Answer', Floor(Rand() * 3), 'Answer')) & '! ;';
+$(Answer)
+
+
+Exit Script;

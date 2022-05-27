@@ -1,0 +1,42 @@
+/*************************************************************************************************
+
+Test Case: Preceding Load to Enhance Readability
+
+Description: Preceding Load allows you to perform additional load steps before initializing a table. Each
+	step uses the output of the preceding load statement as input
+
+*************************************************************************************************/
+
+Original:
+Load
+	Pick(Floor(Rand() * 5) + 1, 'A', 'B', 'C', 'D', 'E')	as Customer,
+	'Q' & (Mod(RowNo(), 4) + 1)								as Quarter,
+	Ceil((Rand() * 100) * (Rand() * 10))					as Sales
+AutoGenerate
+	(100);
+
+New:
+Load
+	CustomerName,
+	Quarter,
+	TotalSales,
+	If(CustomerName = Previous(CustomerName),
+		TotalSales - Previous(TotalSales), 0) as QoQChange
+;
+Load
+	Customer as CustomerName,
+	Quarter,
+	Sum(Sales) as TotalSales
+Resident
+	Original
+Group by
+	Customer,
+	Quarter
+Order by
+	Customer,
+	Quarter;
+	
+Drop Table Original;
+
+
+Exit Script;

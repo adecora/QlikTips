@@ -1,0 +1,29 @@
+/*************************************************************************************************
+
+Test Case: Rename Field with One Statement
+
+Description: Rename all the fields within your QlikSense application using one statement, two if
+	you count the prep work
+
+*************************************************************************************************/
+
+data:
+Load
+	'Test'	as data_name,
+	Rand()	as random_number
+AutoGenerate
+	(100);
+
+field_rename_map:
+Mapping Load
+	FieldName(IterNo(), 'data')	as old_name,
+	Capitalize(Replace(FieldName(IterNo(), 'data'), '_', ' ')) as new_name
+AutoGenerate
+	(1)
+While
+	IterNo() < NoOfFields('data') + 1;
+
+Rename Fields Using field_rename_map;
+
+
+Exit Script;

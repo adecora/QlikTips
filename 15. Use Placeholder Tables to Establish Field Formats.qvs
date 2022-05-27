@@ -1,0 +1,45 @@
+/*************************************************************************************************
+
+Test Case: Use Placeholder Tables to Establish Field Formats
+
+Description: The idea is to create an empty table you can concatenate to. The number one reason I do this is to be
+	explicit. Another reason to do this is you can establish the format of a field. This initialization of a table
+	with the formats will override later formatting attributes.
+
+Result:
+	
+	Placeholder:
+		
+		TextTest	NumTest		TimestampTest
+		       1	   0001     2021-05-25 13:25:58
+		Two            0002		2021-05-25 13:26:00
+		
+*************************************************************************************************/
+
+
+Placeholder:
+Load
+	Text(Null())								as TextTest,
+	Num(Null(), '0000')							as NumTest,
+	Timestamp(Null(), 'YYYY-MM-DD hh:mm:ss')	as TimestampTest
+AutoGenerate
+	(0);
+
+Concatenate(Placeholder)
+Load
+	1				as TextTest,
+	Num(1, '#,##0') as NumTest,
+	Now()			as TimestampTest
+AutoGenerate
+	(1);
+	
+Concatenate(Placeholder)
+Load
+	'Two'								as TextTest,
+	2									as NumTest,
+	Date(Floor(Now()), 'MM/DD/YYYY') 	as TimestampTest
+AutoGenerate
+	(1);
+
+
+Exit Script;
