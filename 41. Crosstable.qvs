@@ -1,0 +1,104 @@
+/*************************************************************************************************
+
+Test Case: Crosstable
+
+Description: We are gonna experiment with crosstable
+
+Result:
+	
+	Example:
+	Load
+		RowNo() as [Row ID],
+		* 
+	Inline [
+		Person|Location|Jan|Feb|Mar
+		Bob|London|100|200|300
+		Kate|New York|400|500|600
+	] (delimiter is '|');
+	
+	output:	
+		[Row ID]  Person   Location 	Jan 	Feb 	Mar
+		1		  Bob	   London		100 	200 	300
+		2		  Kate     New York 	400 	500 	600
+	
+	Example:
+	Crosstable
+	Load
+		RowNo() as [Row ID],
+		* 
+	Inline [
+		Person|Location|Jan|Feb|Mar
+		Bob|London|100|200|300
+		Kate|New York|400|500|600
+	] (delimiter is '|');
+	
+	output:	
+		[Row ID]   Type		  Value    
+		1		   Person	  Bob
+		1		   Location   London
+		1		   Jan		  100	
+		1		   Feb        200
+		1		   Mar		  300 
+		2		   Person	  Kate
+		2		   Location   New york
+		2		   Jan		  400	
+		2		   Feb        500
+		2		   Mar		  600	
+		
+	Example:
+	Crosstable(Month, Sales, 3)
+	Load
+		RowNo() as [Row ID],
+		* 
+	Inline [
+		Person|Location|Jan|Feb|Mar
+		Bob|London|100|200|300
+		Kate|New York|400|500|600
+	] (delimiter is '|');
+	
+	output:
+		[Row ID]  Person   Location   Month   Sales    
+		1		  Bob 	   London     Jan     100
+		1		  Bob 	   London     Feb     200 			
+		1		  Bob 	   London     Mar     300 
+		2		  Kate     New York   Jan     400
+		2		  Kate     New York   Feb     500 		
+		2		  Kate     New York   Mar     600			
+
+*************************************************************************************************/
+
+Raw:
+Load
+	RowNo() as [ID],
+	* 
+Inline [
+Persons|Locations|Jan|Feb|Mar
+Bob|London|100|200|300
+Kate|New York|400|500|600
+] (delimiter is '|');
+
+CrossTable:
+CrossTable
+Load
+	RowNo() as [Row ID],
+	* 
+Inline [
+Person|Location|Jan|Feb|Mar
+Bob|London|100|200|300
+Kate|New York|400|500|600
+] (delimiter is '|');
+
+
+CrossTable_2:
+CrossTable(Month, Sales, 3)
+Load
+	RowNo() as  Row,
+	* 
+Inline [
+Person|Location|Jan|Feb|Mar
+Bob|London|100|200|300
+Kate|New York|400|500|600
+] (delimiter is '|');
+
+
+Exit Script;

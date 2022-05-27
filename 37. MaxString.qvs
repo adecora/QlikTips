@@ -1,0 +1,26 @@
+/*************************************************************************************************
+
+Test Case: MaxString
+
+Description: Finds string values in the expression or field and returns the last text value in 
+	alphabetical sort order
+
+
+*************************************************************************************************/
+
+TeamData:
+LOAD * inline [
+SalesGroup|Team|Date|Amount
+East|Gamma|01/05/2013|20000
+East|Gamma|02/05/2013|20000
+West|Zeta|01/06/2013|19000
+East|Alpha|01/07/2013|25000
+East|Delta|01/08/2013|14000
+West|Epsilon|01/09/2013|17000
+West|Eta|01/10/2013|14000
+East|Beta|01/11/2013|20000
+West|Theta|01/12/2013|23000
+] (delimiter is '|');
+
+
+Exit Script;

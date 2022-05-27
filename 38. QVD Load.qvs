@@ -1,0 +1,87 @@
+/*************************************************************************************************
+
+Test Case: What breaks a QVD Load?
+
+What you can do and still keep a QVD load optimized.
+	● Renaming fields.
+	● You can load a field twice, with a different name of course.
+	● Simple Where Exists.
+		○ Simple: Where Exists([Field])
+		○ Not Simple: Where Exists([Field],[FieldA]&[FieldB])
+		○ The field used in the Exists clause must be in the load script.
+			○ Ex: Tbl: Load Period, Dim, Amt From [Sales.qvd] (qvd)
+			  Where Exists(Period);
+	● Concatenate to a table, only if it contains all of the fields of the table it is concatenating to
+		○ QVD can contain additional fields.
+
+So to summarize what would break an optimization:
+	● Field transformation
+	● New field: expression, number, string, etc…
+	● Where & While conditions
+	● Joins
+	● Concatenating a QVD to a table which has fields not in the QVD
+
+Strategy: I will admit this is a bit limiting. There are going to be use cases there the data needs 
+	to be modified in some way. My suggestion is frame out your load so as to best leverage QVD 
+	loads to optimize getting data into your application. Sometimes this will be more round about, 
+	but will likely be faster.
+
+Ex: Traditional Load Script (Unoptimized)
+
+sales:
+Load
+	Id,
+	Year,
+	Period,
+	CostCenter,
+	Account,
+	Region,
+	Company,
+	Ledger,
+	Qty,
+	Amount
+From
+	[lib://QVD/Sales.qvd](qvd)
+Where
+	Year >= Year(Today())-2
+	AND Ledger = '0L';
+
+
+Ex: Optimized Load Script
+
+// Get rolling Three Years
+year_exists:
+Load
+	Year(Today())-(IterNo()-1) as Year
+AutoGenerate
+	(1)
+While
+	IterNo() <= 3;
+	
+sales:
+Load
+	Id,
+	Year,
+	Period,
+	CostCenter,
+	Account,
+	Region,
+	Company,
+	Ledger,
+	Qty,
+	Amount
+From
+	[lib://QVD/Sales.qvd](qvd)
+Where
+	Exists(Year); // Keeping QVD Load optimized
+
+// Remaining Logic
+Inner Join(sales)
+Load * Inline [
+Ledger
+0L
+];
+
+Drop Table year_exists;
+
+*************************************************************************************************/

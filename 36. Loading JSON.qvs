@@ -1,0 +1,34 @@
+/*************************************************************************************************
+
+Test Case: Natively Loading Json
+
+Description: This only works for flat json, non-nested json hierarchies.
+	You can also directly loas .json file as well. Although, for it to work it can only be a single flat 
+	json structure with no labels or headers
+
+
+*************************************************************************************************/
+
+raw:
+LOAD 
+	"@1:n"	as session_logs
+FROM
+	[C:\Users\alejandro.varela\Documents\.qlik\session-reload.log]
+	(fix, codepage is 28591, embedded labels);
+
+//json:
+//Load
+//	*
+//From_Field
+//	(raw, session_logs) (json, utf8, no labels);
+
+
+single:
+Load
+	*
+FROM
+	[C:\Users\alejandro.varela\Documents\.qlik\session-single.json]
+	(json, utf8, no labels);
+
+
+Exit Script;

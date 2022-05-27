@@ -1,0 +1,77 @@
+/*************************************************************************************************
+
+Test Case: As-Of-Table
+
+Description: We often get the requirement of calculating rolling averages and accumulations of values
+	over a period of time. The As-Of Table helps to achieve rolling averages and accumulations in the script
+
+*************************************************************************************************/
+
+///$tab As of Table
+Let vMin = Num(Makedate(2021));
+Let vMax = Num(MakeDate(2021, 12, 31));
+
+Temp:
+Load
+	Date($(vMin) + IterNo() - 1) as Date
+AutoGenerate
+	(1)
+While
+	($(vMin) + IterNo() - 1)  <= $(vMax);
+
+
+Month:
+Load Distinct
+	Monthstart(Date) as Month
+Resident 
+	Temp;	
+
+Join(Month)
+Load Distinct
+	Monthstart(Date) as AsOfMonth
+Resident
+	Temp;
+
+Drop Table Temp;
+
+
+Set xMonthDiff = '(((Year($2) * 12) + Num(Month($2))) - ((Year($1) * 12) + Num(Month($1))))';
+Set xYearDiff = 'Year($2) - Year($1)'; 
+
+[As-Of calendar]:
+Load
+	Month as Month,
+	AsOfMonth as AsOfMonth,
+	$(xMonthDiff(Month, AsOfMonth)) as MonthDiff,
+	$(xYearDiff(Month, AsOfMonth))  as YearDiff
+Resident
+	Month
+Where
+	AsOfMonth >= Month;
+
+Drop Table Month;
+
+
+///$tab Actual Data
+Sales:
+Load 
+	Date#(Month, 'MM/DD/YYYY') as Month,
+	Sales
+Inline [
+Month, Sales
+01/01/2021, 40363
+02/01/2021, 43065
+03/01/2021, 40276
+04/01/2021, 29280
+05/01/2021, 26784
+06/01/2021, 28768
+07/01/2021, 27690
+08/01/2021, 22196
+09/01/2021, 21823
+10/01/2021, 25155
+11/01/2021, 19962
+12/01/2021, 29989
+];
+
+
+Exit Script;	

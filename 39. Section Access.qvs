@@ -1,0 +1,80 @@
+/*************************************************************************************************
+
+Test Case: Section Access
+
+Description: Create a bridge table between my security table and my data table.	This is because I want 
+	my security table to be one row per user. The limit table will then define the association and 
+	therefore security. Similarly, if you are using OMIT, I will create an omit table which contains the 
+	fields to omit and the group which is tied to those. This is to keep the relationship 1 to many and 
+	my security table one row per user
+
+*************************************************************************************************/
+
+departments:
+Load * Inline [
+department
+'Country',
+'Hip Hop',
+'Lo-Fi',
+'Pop',
+'Rock',
+'Army'
+];
+
+//Section Access;
+// Security Tables
+security:
+Load * Inline [
+ACCESS, USERID, DEPT, OMITGROUP
+ADMIN, INTERNAL\sa_scheduler
+ADMIN, INNOVA-TSN\alejandro.varela
+USER, QSDEV\BARDESSGROUP, ADMIN
+USER, QSDEV\TEST, HIP HOP, A
+];
+
+column_omit:
+Load * Inline [
+OMITGROUP, OMIT
+A, target
+A, pii
+];
+//Section Application;
+
+// Security Association Bridge
+limit:
+Load distinct
+	'ADMIN' as DEPT,
+	department
+Resident
+	departments
+Where
+	department <> 'Army';
+
+Concatenate(limit)
+Load distinct
+	Upper(department) as DEPT,
+	department
+Resident
+	departments;
+
+
+// Data creation
+Set xPickRandomDepartment = Peek('department', Floor(Rand() * 6), 'departments');
+
+Data:
+Load
+	$(xPickRandomDepartment) 				as department,
+	Ceil((Rand() * 100) * (Rand() *  10)) 	as headcount,
+	Floor((Rand() * 100) * (Rand() *  10)) 	as target,
+	'XXX-XX-XXXX'							as pii,
+	Pick(Ceil(Rand() * 4),
+		'Madrid',
+		'Barcelona',
+		'Galicia',
+		'Andalucía')						as region
+AutoGenerate
+	(2500);
+	
+Drop Table departments;	
+
+Exit Script;
