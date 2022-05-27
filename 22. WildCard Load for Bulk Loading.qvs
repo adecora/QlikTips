@@ -1,0 +1,30 @@
+/*************************************************************************************************
+
+Test Case: Wildcard Load for Bulk Loading
+
+Description: One option is to rely in Qlik Associative Engine's brain on waht to do with the tables.
+	If you want to be explicit, which you know I do, you can utilize a loop.
+
+*************************************************************************************************/
+
+Sales:
+Load
+	Null() as Tmp
+AutoGenerate
+	(0);
+	
+For each File in FileList('lib://Data/Sales_*.cvs')
+	
+	Concatenate(Sales)
+	Load
+		*
+	From
+		[$(File)]
+		(txt, utf8, embedded labels, delimiter is ',');
+
+Next File
+
+Drop Field Tmp;
+
+
+Exit Script;

@@ -1,0 +1,27 @@
+/*************************************************************************************************
+
+Test Case: Pick Match, an If Statement Equivalent
+
+Description: Pick and Match replicate the functionality of if statement while increasing performance
+
+Result:
+	
+	If Statement
+		If([Inventory Type]='Individual', 
+			Sum(Qty), 
+				If([Inventory Type] = 'Bulk',Sum(BulkQty)))
+
+	Pick Match Equivalent
+		Pick(Match([Inventory Type],'Individual','Bulk'),
+			Sum(Qty),
+			Sum(BulkQty))
+
+	If you need an Else condition, there is a neat little trick you can do by adding a ‘+1’ and making the first
+	option the Else result:
+
+	Pick(Match([Inventory Type],'Individual','Bulk')+1,
+		'Non-Physical Item',
+		Sum(Qty),
+		Sum(BulkQty))
+
+*************************************************************************************************/

@@ -1,0 +1,59 @@
+/*************************************************************************************************
+
+Test Case: How to Associate Mixed Granularity Data
+
+Description: Some scenarios will call for a link table, others a concatenated fact, but in the end 
+	you will be able to associate the data so you can visualize and compare them effectively
+
+Example: Sales data at Product level, while the budget is at the Product Category level.
+	There are many ways to handle this scenario given the limited amount of fields, however I think
+	it is worth showing in this way so can directly see how to associate acreoss a field
+
+*************************************************************************************************/
+
+Sales:
+Load
+	RowNo() as Id,
+	*
+Inline [
+	ProductId, Amount
+	1001, 100
+	1002, 50
+	1001, 25
+	1003, 75
+	1004, 50
+	1002, 15
+	1002, 75
+];
+
+Product:
+Load * Inline [
+	ProductId, Product, Category
+	1001, One, Alpha
+	1002, Two, Alpha
+	1003, Three, Beta
+	1004, Four, Beta
+];
+
+Concatenate(Sales)
+Load
+	'Budget-' & Category as ProductId,
+	Budget
+Inline [
+	Category, Budget
+	Alpha, 250
+	Beta, 175
+];
+
+Concatenate(Product)
+Load
+	'Budget-' & Category as ProductId,
+	Category
+Inline [
+	Category, Budget
+	Alpha, 250
+	Beta, 175
+];
+
+
+Exit Script;

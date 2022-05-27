@@ -1,0 +1,38 @@
+/*************************************************************************************************
+
+Test Case: Dual Behavior in Set Analysis
+
+Description: By default you need to reference the display (read: string) value of a dual field in set 
+	analysis versus the numerical value.
+	The downside to this is that string operations are much slower than numerical ones. To overcome 
+	this you need to leverage advances search within set analysis.
+
+Result:
+	
+	Data:
+		String Number  Dual (Repr.)
+			A		1   A
+			B		2   B
+			C		3   C
+			A		4   A
+			Z		1   A
+
+*************************************************************************************************/
+
+Data:
+Load
+	RowNo() 				as Id,
+	Text(String) 			as String,
+	Num(Number) 			as Number,
+	Dual(String, Number)	as Dual
+Inline [
+	String, Number
+	A, 1
+	B, 2
+	C, 3
+	A, 4
+	Z, 1
+];
+
+
+Exit Script;
