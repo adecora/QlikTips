@@ -1,0 +1,87 @@
+/*************************************************************************************************
+
+Test Case: Understanding Join Distinct
+
+Description: When you perform a join distinct, you are not joining the distinct table to the other table.
+	You are doing a join and then returning the distinct records from the resulting join
+
+Result: Applying distinct on the join
+
+	original:
+		
+		id	dim	sales  desc
+		1	A	100	   Big Fish	
+		2	A	50	   Big Fish
+		3	B	75	   Reoccuring	
+		4	C	1000   High Roller
+		
+*************************************************************************************************/
+
+//original:
+//Load * Inline [
+//id, dim, sales
+//1, A, 100
+//2, A, 50
+//3, B, 75
+//3, B, 75
+//4, C, 1000
+//];
+//
+//Left Join(original)
+//Load Distinct * Inline [
+//dim, desc
+//A, Big fish
+//B, Reoccurring
+//B, Reoccurring
+//C, High Roller
+//];
+
+/*************************************************************************************************
+
+Test Case: Understanding Join Distinct
+
+Description: When you perform a join distinct, you are not joining the distinct table to the other table.
+	You are doing a join and then returning the distinct records from the resulting join
+
+Result: Applying distinct before the join
+
+	original:
+		
+		id	dim	sales  desc
+		1	A	100	   Big Fish	
+		2	A	50	   Big Fish
+		3	B	75	   Reoccuring
+		3	B	75	   Reoccuring				
+		4	C	1000   High Roller
+		
+*************************************************************************************************/
+
+original:
+Load * Inline [
+id, dim, sales
+1, A, 100
+2, A, 50
+3, B, 75
+3, B, 75
+4, C, 1000
+];
+
+tmp:
+Load Distinct * Inline [
+dim, desc
+A, Big fish
+B, Reoccurring
+B, Reoccurring
+C, High Roller
+];
+
+Left Join(original)
+Load 
+	* 
+Resident 
+	tmp;
+
+Drop Table tmp;
+
+
+Exit Script;

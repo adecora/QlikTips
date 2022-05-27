@@ -1,0 +1,20 @@
+/*************************************************************************************************
+
+Test Case: Only
+
+Description: Is an aggregation function that can be used on a string field. If a single result comes
+	back it will return the result, if more than values occur it return null
+
+*************************************************************************************************/
+
+Fact:
+Load
+	*
+Inline [
+FieldA	FieldB
+Apple	Fuji
+Apple	Honey Crip
+] (delimiter is \t);
+
+
+Exit Script;
