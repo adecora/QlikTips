@@ -11,7 +11,7 @@ test:
 LOAD 
 	"@1:n"	as Source
 FROM
-	[C:\Users\alejandro.varela\Documents\.qlik\ventaRegular.md]
+	[C:\ventaRegular.md]
 	(fix, utf8, record is 100000 lines);
 
 
