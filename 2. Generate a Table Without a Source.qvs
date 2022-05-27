@@ -1,0 +1,39 @@
+/*************************************************************************************************
+
+Test Case: AutoGenerate
+
+Description: useful from empty stub tables, generating a new filed using another's unique values,
+	or as a way to log different steps wihtin the load.
+
+*************************************************************************************************/
+
+// Create empty table and setting field types
+Log:
+Load
+	Null() 				 as Log.Table,
+	Num(Null(), '#.##0') as Log.Rows,
+	Timestamp(Null())	 as Log.Timestamp
+AutoGenerate
+	(0);
+	
+
+Fact:
+Load
+	RowNo() as RowNo,
+	Pick(Floor(Rand() * 4) + 1, 'A', 'B', 'C', 'D') as Client,
+	'Q' & (Mod(RowNo(), 4) + 1) as Quarter,
+	Ceil((Rand() * 100) * (Rand() * 10)) as Sales
+AutoGenerate
+	(1250);
+
+// Add Log record
+Concatenate(Log)
+Load
+	'Fact' 			 as Log.Table,
+	NoOfRows('Fact') as Log.Rows,
+	Now() 			 as Log.Timestamp
+AutoGenerate
+	(1);
+
+
+Exit Script;

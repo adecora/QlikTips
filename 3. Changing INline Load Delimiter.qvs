@@ -1,0 +1,26 @@
+/*************************************************************************************************
+
+Test Case: Change Inline Load Delimiter
+
+Description: Useful so you can copy data directly from Excel into load script for an Inline Load
+
+*************************************************************************************************/
+
+
+Fact:
+Load
+	*
+Inline [
+	Region	Year	Sales
+	North	2018	100
+	North	2019	75
+	West	2019	54
+	East	2017	560
+	East	2018	234
+	East	2019	345
+	South	2018	995
+	South	2019	939
+] (delimiter is \t);
+
+
+Exit Script;

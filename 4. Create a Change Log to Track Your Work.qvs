@@ -1,0 +1,96 @@
+/*************************************************************************************************
+
+Test Case: Create a script section named Change Log in every app you build.
+
+Description: This little piece of documentation gives a bit of background in the app, and then 
+	a list of changes over time with tags to be able to find where they were done easily.
+
+*************************************************************************************************/
+
+///$tab Subroutine
+Sub RowCount(pRowTable)
+
+	Let RC.Rows = Num(NoOfRows('$(pRowTable)'), '#.##0');
+	Trace ---------------- $(pRowTable): $(RC.Rows) rows;
+	RC.Rows=;
+	
+End Sub;
+
+Fact:
+Load
+	Rand() as Random
+AutoGenerate
+	(100000);			// [v1.1.01]
+
+CALL RowCount('Fact');	// [v1.1.02]
+
+Temp:
+Load
+	Chr(IterNo()) as Char
+AutoGenerate
+	(1)
+While
+	IterNo() <= 2;
+
+Outer Join(Fact)
+Load
+	Char
+Resident
+	Temp;
+
+Drop Table Temp;
+
+Call RowCount('Fact')
+
+
+///$tab Exit
+exit script;
+
+
+///$tab Change Log
+/*************************************************************************************************
+
+	Application: 101 - Subroutine
+
+	Description:
+		Example application to provide a simple example of how a subroutine
+		works.
+		
+		
+*************************************************************************************************
+*************************************************************************************************
+	Version: 1.1
+	Date: 2019-05-01
+	
+	Notes: None
+	
+	Changes:
+		- Upped the fact records from 1000 to 100000 [v.1.1.01]	
+		- Added additional RowCount call. [v1.1.02]
+		
+*************************************************************************************************
+*************************************************************************************************
+	Version: 1.0
+	Date: 2019-041-12
+
+	Notes: None
+
+	Changes:
+		- Initial Build
+		
+*************************************************************************************************
+*************************************************************************************************
+	Version: X.X (Change Log Definition)
+	Date: %Date of Change%
+	Author: %Full Name% (%Email Address%)
+	Notes:
+		Used for change log template.
+		[Tags] can be used to take advantage of the search box to navigate directly to change
+	specified.
+
+	Changes:
+		- .... [vX.X.x1]
+		- .... [vX.X.x2]
+		- .... [vX.X.x3]
+
+*************************************************************************************************/

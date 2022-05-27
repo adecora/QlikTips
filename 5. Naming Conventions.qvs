@@ -1,0 +1,16 @@
+/*************************************************************************************************
+
+	Type 			       Standard       Example
+	Regular Variable       ‘v’ Prefix     vStartDate
+    Expression Variable    ‘x’ Prefix     xNetSales
+    Set Analysis Variable  ‘set’ Prefix   setWTD
+    Field Name             Snake Case     order_amount
+    Key Field              ‘%’ Prefix     %product
+    Flag Field             ‘_flag’        Suffix ytd_flag
+
+
+To clear a variable just do:
+
+RC.Rows=;
+
+*************************************************************************************************/

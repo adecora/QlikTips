@@ -1,0 +1,29 @@
+/*************************************************************************************************
+
+Test Case: Subroutine
+
+Description: User defines program wihtin your script that can call at a later time
+
+*************************************************************************************************/
+
+Sub RowCount(pRowTable)
+	
+	Let RC.Rows = Num(NoOfRows('$(pRowTable)'), '#.##0');
+	
+	Trace ---------------- $(pRowTable): $(RC.Rows) rows;
+
+	RC.Rows=;
+
+End Sub;
+
+Fact:
+Load
+	Rand() as Random
+AutoGenerate
+	(Ceil(Rand()*100));
+	
+
+Call RowCount('Fact')
+
+
+Exit Script;
