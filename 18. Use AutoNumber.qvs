@@ -1,0 +1,14 @@
+/*************************************************************************************************
+
+Test Case: Use AutoNumber to Optimize Your Data Model
+
+Description: Will create an integer for each distinct value in your defined namespace, which is usually a field.
+	The second parameter, allows you to define the namespace, which means you can use it across multiple fields
+	while keeping data association integrity.
+	The best use case for AutoNumber id for keys. This will create the smalles footprint for your fields and mantain
+	the relationship
+
+Tip: Apply AutoNumber at the end of your data model build. It is much easier to troubleshoot data model issues when
+	you can see the actual data. After you know linkages are good, the utilize the function.
+		
+*************************************************************************************************/

@@ -1,0 +1,36 @@
+/*************************************************************************************************
+
+Test Case: ApplyMap for Fast VLookup Functionality
+
+Description: ApplyMap is a function that is very similar to VLookup in Excel. Essentially you can utilize a mapping
+	table that you can bulk find and replace; provide an input and receive and return an output that matches
+
+Result: Applying distinct on the join
+
+	Data:
+		
+		Num	String	
+		1	One	
+		2	Two
+		3	Three
+		4	N/A
+		
+*************************************************************************************************/
+
+String_map:
+Mapping Load * Inline [
+input, output
+1, One
+2, Two
+3, Three
+];
+
+Data:
+Load
+	RowNo()									as Num,
+	ApplyMap('String_map', RowNo(), 'N/A')	as String
+AutoGenerate
+	(4);
+
+
+Exit Script;

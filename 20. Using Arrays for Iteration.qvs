@@ -1,0 +1,33 @@
+/*************************************************************************************************
+
+Test Case: Using Arrays for Iteration
+
+*************************************************************************************************/
+
+// Creating an array storing a list in a variable
+Set vCount = 'One', 'Two', 'Three';
+
+For each i in $(vCount)
+	
+	Trace ------------ Variable Array $(i);
+
+Next i
+
+// Creating an array using a field
+Cnt:
+Load * Inline [
+Cnt
+One
+Two
+Three
+];
+
+For each x in FieldValueList('Cnt')
+	
+	Trace ------------ Field Array $(x);
+
+Next x
+
+
+
+Exit Script;

@@ -1,0 +1,35 @@
+/*************************************************************************************************
+
+Test Case: Effectively Work wth Qlik Key Fields
+
+Description: Strongly suggestions in working with Qlik key fields
+	
+	Make separate key fields*
+	Prefix the field with '%'
+	Set HidePrefix with '%'
+	Use AutoNumber
+
+* Because of how the association engine works, you should never use a key field in an expression. It can return
+some very unexpected results. So to handle this, you should make a dupiplicate field to handle the association
+and then use the other field in your expressions
+		
+*************************************************************************************************/
+Set HidePrefix = '%';
+
+Sales:
+Load
+	RowNo() 														as Id,
+	AutoNumber(Pick(Ceil(Rand()*4), 'A', 'B', 'C', 'D'), 'Product') as %ProductId,
+	Ceil(Rand() * 100)												as Qty
+AutoGenerate
+	(1000);
+
+Product:
+Load
+	AutoNumber(Chr(RowNo() + 64), 'Product')	as %ProductId,
+	Chr(RowNo() + 64)							as ProductId
+AutoGenerate
+	(5);
+
+
+Exit Script;
