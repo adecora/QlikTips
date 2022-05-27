@@ -1,0 +1,53 @@
+/*************************************************************************************************
+
+Test Case: Looping Over Records Using While
+
+Description: Using While allows you to loop on a record wihtin a load statement. It will basically keep loading
+	that record until its condition is met.
+
+Example: I have an array which is separated by pipes. I want to pull in the first three values of the array,
+	but not any past that
+
+*************************************************************************************************/
+
+Data:
+Load 
+	RowNo() as ID,
+	*
+Inline [
+Array
+12|13|AAA|1
+12|7|BBB|2
+];
+
+NewData:
+Load
+	SubField(Array, '|', IterNo()) as ArrayValue,
+	IterNo()					   as ArrayIteration
+Resident
+	Data
+While 
+	IterNo() <= 3;
+	
+Drop Table Data;
+
+/*************************************************************************************************
+
+Example: Get a distinct list of dates quickly and/or to generate a new list of dates
+
+Result:
+
+Let vDateField = 'Date';
+
+AllDates:
+Load
+	FieldValue('$(vDateField)', IterNo()) as EveryDate
+AutoGenerate
+	(1)
+While
+	Not IsNull(FieldValue('$(vDateField)', IterNo()));
+
+*************************************************************************************************/
+
+
+Exit Script;

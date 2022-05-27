@@ -1,0 +1,47 @@
+/*************************************************************************************************
+
+Test Case: Create Your Own Concatenated Keys
+
+Description: Always best practice is to be explicit. so even if the output is the same, it's better
+	to program wiht thoughfulness, rather than laziness
+
+*************************************************************************************************/
+
+Data:
+Load
+	Region & '|' & ProductId as %Region_Product,
+	Region,
+	Qty
+Inline [
+	Region, ProductId, Qty
+	North, A, 12
+	East, B, 7
+	West, C, 19
+	North, B, 5
+	East, C, 8
+	West, D, 10
+];
+
+Product:
+Load
+	Region & '|' & ProductId as %Region_Product,
+	ProductId,
+	Price
+Inline [
+	Region, ProductId, Price
+	North, A, 5
+	East, A, 5
+	West, A, 6
+	North, B, 13
+	East, B, 8
+	West, B, 9
+	North, C, 1
+	East, C, 1
+	West, C, 1
+	North, D, 21
+	East, D, 12
+	West, D, 7
+];
+
+
+Exit Script;

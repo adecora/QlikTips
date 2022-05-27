@@ -1,0 +1,31 @@
+/*************************************************************************************************
+
+Test Case: Using Advanced Search to Filter in Set Analisys
+
+Description: What will work wihtin a filter search, will work wihtin a Set Analysis condition between 
+	double quotes
+
+*************************************************************************************************/
+
+Data:
+Load * Inline [
+id, name, exp
+1, Joe, 15
+1, Joe, 8
+1, Sara, 20
+1, Sara, 10
+1, Sara, 24
+2, Emily, 2
+2, Emily, 5
+2, Emily, 7
+2, Mike, 3
+2, Tim, 10
+2, Tim, 14
+3, Christina, 10
+3, Christina, 15
+3, Christina, 15
+3, Christina, 40
+];
+
+
+Exit Script;
