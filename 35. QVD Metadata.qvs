@@ -1,0 +1,39 @@
+/*************************************************************************************************
+
+Test Case: Get QVD Metadata from XML Headers
+
+Description: Each QVD contains an XML header which contains metadata about that QVD. It is very common to
+	leverage this to make a QVD Catalog dashboard to provide some overarching insight into all of the QVDs
+	in your environment.
+
+
+*************************************************************************************************/
+
+// Start of [a_Table.qvd] LOAD statements
+QvdTableHeader:
+CrossTable LOAD
+	RowNo() 										as Row,
+	QvBuildNo,
+    CreatorDoc,
+    CreateUtcTime,
+    SourceFileSize,
+    TableName,
+    [Fields/QvdFieldHeader/FieldName] 				as FieldName,
+    [Fields/QvdFieldHeader/BitOffset] 				as BitOffset,
+    [Fields/QvdFieldHeader/BitWidth] 				as BitWidth,
+    [Fields/QvdFieldHeader/Bias] 					as Bias,
+    [Fields/QvdFieldHeader/NoOfSymbols] 			as NoOfSymbols,
+    [Fields/QvdFieldHeader/Offset] 					as Offset,
+    [Fields/QvdFieldHeader/Length] 					as Length,
+    [Fields/QvdFieldHeader/Tags/String] 			as String,
+    [Fields/QvdFieldHeader/NumberFormat/Type] 		as Type,
+    [Fields/QvdFieldHeader/NumberFormat/nDec] 		as nDec,
+    [Fields/QvdFieldHeader/NumberFormat/UseThou] 	as UseThou
+FROM 
+	[C:\a_Table.qvd] 
+	(XmlSimple, Table is [QvdTableHeader]);
+// End of [a_Table.qvd] LOAD statements
+
+Drop Field Row;
+
+Exit Script;

@@ -1,0 +1,71 @@
+/*************************************************************************************************
+
+Test Case: FileList Mask Order Test 2
+
+Description: The test is pretty simple. We are going to create three files then read them back in using 
+	the FileList mask and capture the order.
+
+Conditions:
+	 
+	 ● File 1: z_Table
+		○ Highest Alphabetical
+		○ Highest File Time
+		○ Middle Size
+	● File 2: m_Table
+		○ Middle Alphabetical
+		○ Middle File Time
+		○ Highest Size
+	● File 3: a_Table
+		○ Lowest Alphabetical
+		○ Lowest File Time
+		○ Lowest Size
+
+*************************************************************************************************/
+
+z_Table:
+Load
+	1 as FieldA
+AutoGenerate
+	(1000);
+
+m_Table:
+Load
+	1 as FieldB
+AutoGenerate
+	(100000);
+
+a_Table:
+Load
+	1 as FieldC
+AutoGenerate
+	(10);
+
+result:
+Load
+	Num(Null()) as Order,
+	Null() 		as File
+AutoGenerate
+	(0);
+
+
+For each t in 'a_Table', 'm_Table', 'z_Table'
+
+	Trace ---------------- $(t);
+	Store $(t) into [C\$(t).qvd](qvd);
+	Drop Table $(t);
+	
+Next t
+
+For each file in FileList('C:\*.qvd')
+
+	Concatenate(result)
+	Load
+		RowNo() 	as Order,
+		'$(file)' 	as File
+	AutoGenerate
+		(1);
+		
+Next file
+
+
+Exit Script;

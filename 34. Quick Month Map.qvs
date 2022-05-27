@@ -1,0 +1,34 @@
+/*************************************************************************************************
+
+Test Case: How to Create a Quick Month Map
+
+Description: If you ever need to convert month names or prefixes to numbers or dates you can leverage
+	the default variables and Subfield to quickly create a mapping table to later use with an ApplyMap
+
+*************************************************************************************************/
+
+// System variables
+SET MonthNames='ene.;feb.;mar.;abr.;may.;jun.;jul.;ago.;sept.;oct.;nov.;dic.';
+
+
+month_map:
+Mapping Load 
+	SubField('$(MonthNames)', ';')  as month,
+	RowNo()							as month_num
+AutoGenerate
+	(1);
+
+example:
+Load
+	MakeDate(year, ApplyMap('month_map', month, Null())) as date,
+	ApplyMap('month_map', month, Null()) as month_number,
+	*
+Inline [
+month, year, qty
+ene., 2020, 10
+feb., 2020, 15
+mar., 2020, 5
+abr., 2020, 20
+];
+
+Exit Script;
