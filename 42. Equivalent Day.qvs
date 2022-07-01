@@ -1,0 +1,37 @@
+/*************************************************************************************************
+
+Test Case: Equivalent Day
+
+Description: Formula to get the equivalent day against year `$year` (*fiscal year) for any date
+
+* fiscal year: from 1 of March to 28 of february of next year.
+*************************************************************************************************/
+
+// Min and max dates for our calendar
+Let start = Num(MakeDate(2021, 03, 01));
+Let end = Num(MakeDate(2022, 07, 01));
+
+// Year against we need to calculate the equivalent date
+Let year = 2019;
+
+// Formula to get the `$(year)` (fiscal year) day equivalent
+Set equivalentDay = If(Num(Month($1)) <= 2,
+						DATE($1 - (364 * (Year($1) - ($(year) + 1)))),
+						DATE($1 - (364 * (Year($1) - $(year))))
+					);
+ 
+Calendar:
+LOAD
+	date,
+	$(equivalentDay(date)) as equivalent
+;
+LOAD
+	Date($(start) + IterNo() - 1) as date,
+	IterNo()
+AutoGenerate
+	(1)
+While
+	($(start) + IterNo() - 1) < $(end);
+
+
+Exit Script;
